@@ -10,20 +10,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-logical_product_family  = "lpf"
-logical_product_service = "lps"
-class_env               = "dev"
-instance_env            = 1
-instance_resource       = 1
+terraform {
+  required_version = "~> 1.5"
 
-resource_names_map = {
-  sqsqueue1 = {
-    name       = "sqsqueue1"
-    max_length = 80
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.14"
+    }
   }
-}
-
-tags = {
-  Environment = "test"
-  Module      = "sqs-queue-policy"
 }

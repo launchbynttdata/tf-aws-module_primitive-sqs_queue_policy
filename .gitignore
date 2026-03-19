@@ -34,6 +34,9 @@ crash.*.log
 *.tfvars.json
 *.auto.tfvars
 
+# Local Make overrides (e.g. Conftest policy path workarounds); -include skips if missing
+Makefile.override
+
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf
@@ -56,6 +59,7 @@ terraform.rc
 azure_env.sh
 .releaserc.json
 
+local_code_review.md
 
 # VS Code
 .vscode/

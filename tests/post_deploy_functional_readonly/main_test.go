@@ -13,6 +13,8 @@
 package test
 
 import (
+	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/launchbynttdata/lcaf-component-terratest/lib"
@@ -20,15 +22,19 @@ import (
 	"github.com/launchbynttdata/tf-aws-module-primitive-sqs-queue-policy/tests/testimpl"
 )
 
-const (
-	testConfigsExamplesFolderDefault = "../../examples/complete"
-	infraTFVarFileNameDefault        = "test.tfvars"
-)
+const infraTFVarFileNameDefault = "test.tfvars"
+
+func examplesDir(name string) string {
+	_, f, _, _ := runtime.Caller(0)
+	root := filepath.Join(filepath.Dir(f), "..", "..", "examples", name)
+	abs, _ := filepath.Abs(root)
+	return abs
+}
 
 func TestSqsQueuePolicyModuleReadonly(t *testing.T) {
 	ctx := types.CreateTestContextBuilder().
 		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
-		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
+		SetTestConfigFolderName(examplesDir("complete")).
 		SetTestConfigFileName(infraTFVarFileNameDefault).
 		Build()
 

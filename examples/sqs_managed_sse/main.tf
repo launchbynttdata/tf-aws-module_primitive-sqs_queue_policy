@@ -29,26 +29,9 @@ module "resource_names" {
   region                  = join("", split("-", data.aws_region.current.name))
 }
 
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-  upper   = false
-}
-
-resource "aws_kms_key" "queue" {
-  description             = "KMS key for SQS queue encryption"
-  deletion_window_in_days = 7
-  enable_key_rotation     = true
-}
-
-resource "aws_kms_alias" "queue" {
-  name          = "alias/sqs-queue-policy-example-${random_string.suffix.result}"
-  target_key_id = aws_kms_key.queue.key_id
-}
-
 resource "aws_sqs_queue" "queue" {
   name                       = module.resource_names["sqsqueue1"].minimal_random_suffix
-  kms_master_key_id          = aws_kms_key.queue.arn
+  kms_master_key_id          = "alias/aws/sqs"
   message_retention_seconds  = var.message_retention_seconds
   visibility_timeout_seconds = var.visibility_timeout_seconds
 

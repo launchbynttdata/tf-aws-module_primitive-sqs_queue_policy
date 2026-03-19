@@ -1,6 +1,8 @@
-# SQS Queue Policy Example
+# SQS Queue Policy Example (AWS-Managed KMS)
 
-This example creates an SQS queue with KMS encryption and attaches a queue policy using the primitive module. It uses the resource naming module for consistent naming.
+This example creates an SQS queue with server-side encryption using the AWS-managed SQS KMS key (`alias/aws/sqs`) and attaches a queue policy. It demonstrates a minimal encryption setup without provisioning a customer-managed KMS key.
+
+**Note:** The `complete` example uses a customer-managed KMS key with key rotation, which provides additional control and satisfies stricter compliance requirements.
 
 ## Usage
 
@@ -24,25 +26,9 @@ module "resource_names" {
   region                  = join("", split("-", data.aws_region.current.name))
 }
 
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-  upper   = false
-}
-
-resource "aws_kms_key" "queue" {
-  description             = "KMS key for SQS queue encryption"
-  deletion_window_in_days = 7
-}
-
-resource "aws_kms_alias" "queue" {
-  name          = "alias/sqs-queue-policy-example-${random_string.suffix.result}"
-  target_key_id = aws_kms_key.queue.key_id
-}
-
 resource "aws_sqs_queue" "queue" {
   name                       = module.resource_names["sqsqueue1"].minimal_random_suffix
-  kms_master_key_id          = aws_kms_key.queue.arn
+  kms_master_key_id          = "alias/aws/sqs"
   message_retention_seconds  = var.message_retention_seconds
   visibility_timeout_seconds = var.visibility_timeout_seconds
   tags                       = var.tags
@@ -80,13 +66,11 @@ module "queue_policy" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.14 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.6 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_random"></a> [random](#provider\_random) | 3.8.1 |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
 
 ## Modules
@@ -100,10 +84,7 @@ module "queue_policy" {
 
 | Name | Type |
 |------|------|
-| [aws_kms_alias.queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_key.queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_sqs_queue.queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue) | resource |
-| [random_string.suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 

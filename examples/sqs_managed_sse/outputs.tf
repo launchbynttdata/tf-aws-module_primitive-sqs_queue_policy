@@ -10,20 +10,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-logical_product_family  = "lpf"
-logical_product_service = "lps"
-class_env               = "dev"
-instance_env            = 1
-instance_resource       = 1
-
-resource_names_map = {
-  sqsqueue1 = {
-    name       = "sqsqueue1"
-    max_length = 80
-  }
+output "id" {
+  description = "The ID of the queue policy (same as the queue URL)."
+  value       = module.queue_policy.id
 }
 
-tags = {
-  Environment = "test"
-  Module      = "sqs-queue-policy"
+output "queue_url" {
+  description = "The URL of the SQS queue."
+  value       = module.queue_policy.queue_url
+}
+
+output "policy" {
+  description = "The policy document attached to the queue."
+  value       = module.queue_policy.policy
 }

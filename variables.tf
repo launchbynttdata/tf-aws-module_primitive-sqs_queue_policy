@@ -17,18 +17,15 @@ variable "queue_url" {
 
 variable "policy" {
   description = <<-EOT
-    The JSON policy document for the SQS queue. Must include a Version identifier
-    (e.g., "2012-10-17" or "2008-10-17") as the top-level key per AWS IAM policy
-    document requirements. See:
-    https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_version.html
+    The JSON policy document for the SQS queue. Must include Version = "2012-10-17"
+    as the top-level key. AWS may hang indefinitely without an explicit version;
+    "2012-10-17" is required per the Terraform AWS provider resource documentation.
+    See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy
   EOT
   type        = string
 
   validation {
-    condition = can(jsondecode(var.policy)) && contains(
-      ["2012-10-17", "2008-10-17"],
-      try(jsondecode(var.policy)["Version"], "")
-    )
-    error_message = "The policy document must contain a top-level Version identifier. Valid values are \"2012-10-17\" or \"2008-10-17\" as per AWS IAM policy document requirements."
+    condition     = can(jsondecode(var.policy)) && try(jsondecode(var.policy)["Version"], "") == "2012-10-17"
+    error_message = "The policy document must contain a top-level Version = \"2012-10-17\" identifier. AWS may hang without it; see the aws_sqs_queue_policy resource documentation."
   }
 }

@@ -43,6 +43,7 @@ JOB_EMAIL ?= job@job.job
 
 COMPONENTS_DIR = components
 -include $(COMPONENTS_DIR)/Makefile
+-include Makefile.override  # optional; no-op if missing (e.g. when gitignored)
 
 MODULE_DIR ?= ${COMPONENTS_DIR}/module
 

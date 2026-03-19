@@ -5,7 +5,7 @@
 
 ## Overview
 
-This Terraform module wraps the [aws_sqs_queue_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) resource to attach an IAM policy document to an SQS queue. The module validates that the policy document contains a Version identifier (`2012-10-17` or `2008-10-17`) as required by AWS IAM policy documents.
+This Terraform module wraps the [aws_sqs_queue_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) resource to attach an IAM policy document to an SQS queue. The module validates that the policy document contains `Version = "2012-10-17"` as required by the Terraform AWS provider resource documentation; without it, AWS may hang indefinitely.
 
 ## Pre-Commit hooks
 
@@ -47,48 +47,14 @@ module "queue_policy" {
 }
 ```
 
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.14 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.14 |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_sqs_queue_policy.queue_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) | resource |
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_queue_url"></a> [queue_url](#input\_queue\_url) | The URL of the SQS Queue to which to attach the policy. | `string` | n/a | yes |
-| <a name="input_policy"></a> [policy](#input\_policy) | The JSON policy document for the SQS queue. Must include a Version identifier (e.g., "2012-10-17" or "2008-10-17") as the top-level key per AWS IAM policy document requirements. | `string` | n/a | yes |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_id"></a> [id](#output\_id) | The ID of the resource (same as the queue URL). |
-| <a name="output_queue_url"></a> [queue_url](#output\_queue\_url) | The URL of the SQS queue to which the policy is attached. |
-| <a name="output_policy"></a> [policy](#output\_policy) | The policy document attached to the queue. |
-
 ## Policy Document Validation
 
 The module validates that the policy document:
 
 1. Is valid JSON
-2. Contains a top-level `Version` key with value `2012-10-17` or `2008-10-17`
+2. Contains a top-level `Version = "2012-10-17"` identifier
 
-AWS may hang indefinitely when creating or updating an SQS queue policy without an explicit Version identifier. See the [Terraform AWS provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) for details.
+AWS may hang indefinitely when creating or updating an SQS queue policy without this explicit version. See the [Terraform AWS provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) for details.
 
 ## Testing
 
@@ -128,7 +94,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_queue_url"></a> [queue\_url](#input\_queue\_url) | The URL of the SQS Queue to which to attach the policy. | `string` | n/a | yes |
-| <a name="input_policy"></a> [policy](#input\_policy) | The JSON policy document for the SQS queue. Must include a Version identifier<br/>(e.g., "2012-10-17" or "2008-10-17") as the top-level key per AWS IAM policy<br/>document requirements. See:<br/>https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_version.html | `string` | n/a | yes |
+| <a name="input_policy"></a> [policy](#input\_policy) | The JSON policy document for the SQS queue. Must include Version = "2012-10-17"<br/>as the top-level key. AWS may hang indefinitely without an explicit version;<br/>"2012-10-17" is required per the Terraform AWS provider resource documentation.<br/>See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy | `string` | n/a | yes |
 
 ## Outputs
 

@@ -26,4 +26,5 @@ resource_names_map = {
 tags = {
   Environment = "test"
   Module      = "sqs-queue-policy"
+  Example     = "sqs_managed_sse"
 }
