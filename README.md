@@ -70,7 +70,7 @@ Ensure AWS credentials are configured (e.g., `AWS_PROFILE`, `AWS_ACCESS_KEY_ID`/
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.9 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.14 |
 
 ## Providers
