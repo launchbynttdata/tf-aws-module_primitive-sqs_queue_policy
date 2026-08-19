@@ -73,12 +73,6 @@ Ensure AWS credentials are configured (e.g., `AWS_PROFILE`, `AWS_ACCESS_KEY_ID`/
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.9 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.14 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
-
 ## Modules
 
 No modules.
@@ -93,14 +87,14 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_queue_url"></a> [queue\_url](#input\_queue\_url) | The URL of the SQS Queue to which to attach the policy. | `string` | n/a | yes |
 | <a name="input_policy"></a> [policy](#input\_policy) | The JSON policy document for the SQS queue. Must include Version = "2012-10-17"<br/>as the top-level key. AWS may hang indefinitely without an explicit version;<br/>"2012-10-17" is required per the Terraform AWS provider resource documentation.<br/>See: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy | `string` | n/a | yes |
+| <a name="input_queue_url"></a> [queue\_url](#input\_queue\_url) | The URL of the SQS Queue to which to attach the policy. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_id"></a> [id](#output\_id) | The ID of the resource (same as the queue URL). |
-| <a name="output_queue_url"></a> [queue\_url](#output\_queue\_url) | The URL of the SQS queue to which the policy is attached. |
 | <a name="output_policy"></a> [policy](#output\_policy) | The policy document attached to the queue. |
+| <a name="output_queue_url"></a> [queue\_url](#output\_queue\_url) | The URL of the SQS queue to which the policy is attached. |
 <!-- END_TF_DOCS -->
