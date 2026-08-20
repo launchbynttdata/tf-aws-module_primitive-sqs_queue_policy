@@ -7,21 +7,6 @@
 
 This Terraform module wraps the [aws_sqs_queue_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) resource to attach an IAM policy document to an SQS queue. The module validates that the policy document contains `Version = "2012-10-17"` as required by the Terraform AWS provider resource documentation; without it, AWS may hang indefinitely.
 
-## Pre-Commit hooks
-
-[.pre-commit-config.yaml](.pre-commit-config.yaml) defines pre-commit hooks for Terraform, Go, and common linting tasks.
-
-`commitlint` enforces conventional commit message format. See [commitlint-config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum) for the type enum.
-
-`detect-secrets-hook` prevents new secrets from being introduced into the baseline.
-
-Install hooks:
-
-```
-pre-commit install
-pre-commit install --hook-type commit-msg
-```
-
 ## Usage
 
 ```hcl
@@ -55,15 +40,6 @@ The module validates that the policy document:
 2. Contains a top-level `Version = "2012-10-17"` identifier
 
 AWS may hang indefinitely when creating or updating an SQS queue policy without this explicit version. See the [Terraform AWS provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) for details.
-
-## Testing
-
-```bash
-make configure
-make check
-```
-
-Ensure AWS credentials are configured (e.g., `AWS_PROFILE`, `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`, or default credential chain).
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
