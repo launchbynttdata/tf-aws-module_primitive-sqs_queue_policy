@@ -83,9 +83,9 @@ func assertPolicyStatementsMatch(t *testing.T, expectedDoc, actualDoc map[string
 
 func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	t.Run("VerifyTerraformOutputs", func(t *testing.T) {
-		queueURL := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_url")
-		policyOutput := terraform.Output(t, ctx.TerratestTerraformOptions(), "policy")
-		idOutput := terraform.Output(t, ctx.TerratestTerraformOptions(), "id")
+		queueURL := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_url")
+		policyOutput := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "policy")
+		idOutput := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "id")
 
 		require.NotEmpty(t, queueURL, "queue_url output must not be empty")
 		require.NotEmpty(t, policyOutput, "policy output must not be empty")
@@ -93,8 +93,8 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	})
 
 	t.Run("VerifyPolicyViaAWSAPI", func(t *testing.T) {
-		queueURL := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_url")
-		expectedPolicy := terraform.Output(t, ctx.TerratestTerraformOptions(), "policy")
+		queueURL := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_url")
+		expectedPolicy := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "policy")
 
 		cfg, err := config.LoadDefaultConfig(context.Background())
 		require.NoError(t, err)
@@ -117,7 +117,7 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	})
 
 	t.Run("SendMessageToQueue", func(t *testing.T) {
-		queueURL := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_url")
+		queueURL := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_url")
 
 		cfg, err := config.LoadDefaultConfig(context.Background())
 		require.NoError(t, err)
@@ -133,9 +133,9 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 
 func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {
 	t.Run("VerifyTerraformOutputs", func(t *testing.T) {
-		queueURL := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_url")
-		policyOutput := terraform.Output(t, ctx.TerratestTerraformOptions(), "policy")
-		idOutput := terraform.Output(t, ctx.TerratestTerraformOptions(), "id")
+		queueURL := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_url")
+		policyOutput := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "policy")
+		idOutput := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "id")
 
 		require.NotEmpty(t, queueURL, "queue_url output must not be empty")
 		require.NotEmpty(t, policyOutput, "policy output must not be empty")
@@ -143,8 +143,8 @@ func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {
 	})
 
 	t.Run("VerifyPolicyViaAWSAPI", func(t *testing.T) {
-		queueURL := terraform.Output(t, ctx.TerratestTerraformOptions(), "queue_url")
-		expectedPolicy := terraform.Output(t, ctx.TerratestTerraformOptions(), "policy")
+		queueURL := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "queue_url")
+		expectedPolicy := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "policy")
 
 		cfg, err := config.LoadDefaultConfig(context.Background())
 		require.NoError(t, err)
